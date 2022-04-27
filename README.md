@@ -32,12 +32,12 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Using custom domain
 - Bulk link shortening
 - Add tags to links
-- Separate stats by dates (Maybe try NoSQL?)
 - Bulk export links
 - Delete links
 - Edit links
 - Download QR code as SVG or PNG
 - Export link stats
+- Separate stats by dates (Maybe try NoSQL?)
 - Get location stats for clicks
 - Get device stats for clicks
 - Get browser stats for clicks

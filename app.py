@@ -71,6 +71,22 @@ def create():
 
     return f"localhost:5000/{username}/{alias}"
 
+# Bulk Create Link
+@app.route("/bulkcreate", methods = ['POST'])
+def bulkCreate():
+    # Retrieve data
+    original = request.form["original"]
+    alias = request.form["alias"]
+    username = request.form["username"]
+
+    # Insert data
+    cur = mysql.connection.cursor()
+    res = cur.execute("INSERT INTO urls (original, alias, username) VALUES (%s, %s, %s)", (original, alias, username))
+    mysql.connection.commit()
+    cur.close()
+
+    return f"localhost:5000/{username}/{alias}"
+
 # Get Link
 @app.route("/<username>/<alias>")
 def get(username, alias):
@@ -84,6 +100,22 @@ def get(username, alias):
 
     # Redirect to original
     return f"{res[1]}"
+
+# Get all links from a user
+@app.route("/<username>")
+def userLinks(username):
+    # Query user
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM urls WHERE username = %s", [username])
+    row_headers = [x[0] for x in cur.description]
+    res = cur.fetchall()
+    cur.close()
+    
+    jsonData = []
+    for i in res:
+        jsonData.append(dict(zip(row_headers, i)))
+
+    return jsonify(jsonData)
 
 # Get Stats
 @app.route("/<username>/<alias>/stats")
@@ -99,7 +131,7 @@ def stats(username, alias):
 
 # Get All Stats
 @app.route("/stats")
-def all_stats():
+def allStats():
     # Retrieve data
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM urls")
@@ -108,34 +140,17 @@ def all_stats():
     cur.close()
 
     # Format into json
-    json_data = []
+    jsonData = []
     for i in res:
-        json_data.append(dict(zip(row_headers, i)))
+        jsonData.append(dict(zip(row_headers, i)))
 
     # Redirect to original
-    return jsonify(json_data)
+    return jsonify(jsonData)
 
 # Generate QR Code
 @app.route("/<username>/<alias>/qr")
-def qr_generation(username, alias):
+def qrGeneration(username, alias):
     # Generate QR Code
     filename = qr("localhost:5000/{}/{}".format(username, alias))
     
     return send_file(filename, mimetype='image/png')
-
-# Get all links from a user
-@app.route("/<username>")
-def user_links(username):
-    # Query user
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM urls WHERE username = %s", [username])
-    row_headers = [x[0] for x in cur.description]
-    res = cur.fetchall()
-    cur.close()
-    
-    json_data = []
-    for i in res:
-        json_data.append(dict(zip(row_headers, i)))
-
-    return jsonify(json_data)
-
