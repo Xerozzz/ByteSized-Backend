@@ -30,7 +30,6 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Download QR code as SVG or PNG
 
 ## Pending Features
-- Using custom domain
 - Add tags to links
 - Bulk export links
 - Export link stats
