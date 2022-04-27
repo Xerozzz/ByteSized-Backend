@@ -16,7 +16,6 @@ Install dependencies, create the SQLite database and run the flask application
 
 You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 
-
 ## Features
 - Login User
 - Register User
