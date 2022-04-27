@@ -39,3 +39,4 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Get device stats for clicks
 - Get browser stats for clicks
 - Checks for duplicate create links
+- Add error handling and validation checks

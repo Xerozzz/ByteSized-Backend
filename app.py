@@ -208,9 +208,9 @@ def allStats():
     return jsonify(jsonData)
 
 # Generate QR Code
-@app.route("/<username>/<alias>/qr")
-def qrGeneration(username, alias):
+@app.route("/<username>/<alias>/qr/<filetype>")
+def qrGeneration(username, alias, filetype):
     # Generate QR Code
-    filename = qr("localhost:5000/{}/{}".format(username, alias))
+    filename= qr("localhost:5000/{}/{}".format(username, alias), filetype)
     
-    return send_file(filename, mimetype='image/png')
+    return send_file(filename, mimetype=f"image/{filetype}")
