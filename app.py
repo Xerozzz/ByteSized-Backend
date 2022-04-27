@@ -1,7 +1,12 @@
-from flask import Flask, request, jsonify
+# Library imports
+from flask import Flask, request, jsonify,send_file
 from flask_mysqldb import MySQL
-import config
 from werkzeug.security import generate_password_hash, check_password_hash
+
+# Import from other python files
+import config
+from qr import qr
+
 app = Flask(__name__)
 
 # DB init
@@ -109,3 +114,28 @@ def all_stats():
 
     # Redirect to original
     return jsonify(json_data)
+
+# Generate QR Code
+@app.route("/<username>/<alias>/qr")
+def qr_generation(username, alias):
+    # Generate QR Code
+    filename = qr("localhost:5000/{}/{}".format(username, alias))
+    
+    return send_file(filename, mimetype='image/png')
+
+# Get all links from a user
+@app.route("/<username>")
+def user_links(username):
+    # Query user
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM urls WHERE username = %s", [username])
+    row_headers = [x[0] for x in cur.description]
+    res = cur.fetchall()
+    cur.close()
+    
+    json_data = []
+    for i in res:
+        json_data.append(dict(zip(row_headers, i)))
+
+    return jsonify(json_data)
+
