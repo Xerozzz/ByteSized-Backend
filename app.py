@@ -130,6 +130,23 @@ def deleteLink():
 
     return "Link deleted!"
 
+# Update Link
+@app.route("/update", methods = ['PUT'])
+def putLink():
+    alias = request.form["alias"]
+    username = request.form["username"]
+
+    newAlias = request.form["newAlias"]
+    newOriginal = request.form["newOriginal"]
+
+    # Delete data
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE urls SET alias = %s, original = %s WHERE alias = %s and username = %s", (newAlias, newOriginal, alias, username))
+    mysql.connection.commit()
+    cur.close()
+
+    return "Link updated!"
+
 # Get Link
 @app.route("/<username>/<alias>")
 def get(username, alias):

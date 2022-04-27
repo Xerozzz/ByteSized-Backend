@@ -16,9 +16,6 @@ Install dependencies, create the SQLite database and run the flask application
 
 You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 
-## Contributing
-
-
 
 ## Features
 - Login User
@@ -29,12 +26,12 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Get all links by a user
 - Bulk link shortening using CSV
 - Delete links
+- Edit links
 
 ## Pending Features
 - Using custom domain
 - Add tags to links
 - Bulk export links
-- Edit links
 - Download QR code as SVG or PNG
 - Export link stats
 - Separate stats by dates (Maybe try NoSQL?)
