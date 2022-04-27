@@ -2,12 +2,20 @@
 from flask import Flask, request, jsonify,send_file
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import os
+import sys
+import config
 
 # Import from other python files
-import config
+sys.path.append('./modules')
 from qr import qr
+from processData import processData
 
 app = Flask(__name__)
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = {'csv'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # DB init
 app.config['MYSQL_HOST'] = config.MYSQL_HOST
@@ -20,6 +28,11 @@ mysql = MySQL(app)
 @app.route("/")
 def index():
     return "Connection Success!"
+
+# Allowed Files Check
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Register User
 @app.route("/register", methods = ['POST'])
@@ -75,17 +88,47 @@ def create():
 @app.route("/bulkcreate", methods = ['POST'])
 def bulkCreate():
     # Retrieve data
-    original = request.form["original"]
+    if 'file' not in request.files:
+        return "No file part"
+    file = request.files['file']
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        return 'No selected file'
+    if file and allowed_file(file.filename):
+        # Store file
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # Process data
+        val = processData(filename)
+        
+        # Insert data
+        cur = mysql.connection.cursor()
+        sql = "INSERT INTO urls (original, alias, username) VALUES (%s, %s, %s)"
+        cur.executemany(sql,val)
+        mysql.connection.commit()
+        rows = cur.rowcount
+        cur.close()
+
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return f"{rows} links added!"
+
+    return "Failed!"
+
+# Delete Link
+@app.route("/delete", methods = ['DELETE'])
+def deleteLink():
     alias = request.form["alias"]
     username = request.form["username"]
 
-    # Insert data
+    # Delete data
     cur = mysql.connection.cursor()
-    res = cur.execute("INSERT INTO urls (original, alias, username) VALUES (%s, %s, %s)", (original, alias, username))
+    cur.execute("DELETE FROM urls WHERE alias = %s and username =  %s", (alias, username))
     mysql.connection.commit()
     cur.close()
 
-    return f"localhost:5000/{username}/{alias}"
+    return "Link deleted!"
 
 # Get Link
 @app.route("/<username>/<alias>")

@@ -27,13 +27,13 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Get stats for individual or all link(s)
 - Generate QR Code
 - Get all links by a user
+- Bulk link shortening using CSV
+- Delete links
 
 ## Pending Features
 - Using custom domain
-- Bulk link shortening
 - Add tags to links
 - Bulk export links
-- Delete links
 - Edit links
 - Download QR code as SVG or PNG
 - Export link stats
@@ -41,3 +41,4 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Get location stats for clicks
 - Get device stats for clicks
 - Get browser stats for clicks
+- Checks for duplicate create links
