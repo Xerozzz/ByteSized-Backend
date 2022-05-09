@@ -12,7 +12,9 @@ def processData(filename):
                 print("Column header, skipping")
                 lineCount += 1
             else:
-                lineData = (row[0], row[1], row[2])
+                if row[3] == "":
+                    row[3] = "[]"
+                lineData = (row[0], row[1], row[2], row[3])
                 data.append(lineData)
                 lineCount += 1
         return data

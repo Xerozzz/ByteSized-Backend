@@ -27,9 +27,10 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Delete links
 - Edit links
 - Download QR code as SVG or PNG
+- Add tags to links (9/5/2022)
 
 ## Pending Features
-- Add tags to links
+
 - Bulk export links
 - Export link stats
 - Separate stats by dates (Maybe try NoSQL?)

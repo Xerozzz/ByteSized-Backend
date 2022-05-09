@@ -75,10 +75,13 @@ def create():
     original = request.form["original"]
     alias = request.form["alias"]
     username = request.form["username"]
+    tag = request.form["tag"]
+    if tag == "":
+        tag = []
 
     # Insert data
     cur = mysql.connection.cursor()
-    res = cur.execute("INSERT INTO urls (original, alias, username) VALUES (%s, %s, %s)", (original, alias, username))
+    res = cur.execute("INSERT INTO urls (original, alias, username, tag) VALUES (%s, %s, %s, %s)", (original, alias, username, str(tag)))
     mysql.connection.commit()
     cur.close()
 
@@ -105,7 +108,7 @@ def bulkCreate():
         
         # Insert data
         cur = mysql.connection.cursor()
-        sql = "INSERT INTO urls (original, alias, username) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO urls (original, alias, username, tag) VALUES (%s, %s, %s, %s)"
         cur.executemany(sql,val)
         mysql.connection.commit()
         rows = cur.rowcount
@@ -138,10 +141,11 @@ def putLink():
 
     newAlias = request.form["newAlias"]
     newOriginal = request.form["newOriginal"]
+    tag = request.form["tag"]
 
     # Delete data
     cur = mysql.connection.cursor()
-    cur.execute("UPDATE urls SET alias = %s, original = %s WHERE alias = %s and username = %s", (newAlias, newOriginal, alias, username))
+    cur.execute("UPDATE urls SET alias = %s, original = %s, tag = %s WHERE alias = %s and username = %s", (newAlias, newOriginal, str(tag), alias, username))
     mysql.connection.commit()
     cur.close()
 
