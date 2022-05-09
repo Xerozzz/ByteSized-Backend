@@ -30,8 +30,8 @@ You can access the application at 127.0.0.1:5000 or <your_domain>:5000.
 - Add tags to links (09/05/2022)
 
 ## Pending Features
-- Bulk export links (will be done on frontend)
-- Export link stats
+- Bulk export links (will be done on frontend using existing routes)
+- Export link stats (will be done on frontend using existing routes)
 - Separate stats by dates (Maybe try NoSQL?)
 - Get location stats for clicks
 - Get device stats for clicks
