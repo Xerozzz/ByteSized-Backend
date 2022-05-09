@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify,send_file
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+from pymongo import MongoClient
 import os
 import sys
 import config
@@ -17,7 +18,13 @@ UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# DB init
+# MongoDB Atlas (need to change if using normal mongodb or other db)
+mongodb_atlas = config.MONGODB_ATLAS
+client = MongoClient(mongodb_atlas)
+db = client.clicks
+clicks = db.clicks
+
+# SQLDB init
 app.config['MYSQL_HOST'] = config.MYSQL_HOST
 app.config['MYSQL_USER'] = config.MYSQL_USER
 app.config['MYSQL_PASSWORD'] = config.MYSQL_PASSWORD
