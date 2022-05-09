@@ -7,6 +7,8 @@ from pymongo import MongoClient
 import os
 import sys
 import config
+from datetime import datetime
+import httpagentparser
 
 # Import from other python files
 sys.path.append('./modules')
@@ -34,6 +36,7 @@ mysql = MySQL(app)
 # Test
 @app.route("/")
 def index():
+    print("Connection success!")
     return "Connection Success!"
 
 # Allowed Files Check
@@ -168,6 +171,12 @@ def get(username, alias):
     cur.execute("UPDATE urls SET clicks = clicks + 1 WHERE alias = %s AND username = %s", (alias, username))
     mysql.connection.commit()
     cur.close()
+
+    # Create timestamp
+    time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    agent = httpagentparser.detect(request.headers.get('User-Agent'))
+    os = agent["platform"]["name"]
+    browser = agent["browser"]["name"]
 
     # Redirect to original
     return f"{res[1]}"
