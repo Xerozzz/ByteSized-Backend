@@ -164,6 +164,12 @@ def putLink():
 # Get Link
 @app.route("/<username>/<alias>")
 def get(username, alias):
+    # Create timestamp
+    time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    agent = httpagentparser.detect(request.headers.get('User-Agent'))
+    os = agent["platform"]["name"]
+    browser = agent["browser"]["name"]
+
     # Retrieve data
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM urls WHERE alias = %s AND username = %s", (alias, username))
@@ -172,11 +178,14 @@ def get(username, alias):
     mysql.connection.commit()
     cur.close()
 
-    # Create timestamp
-    time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    agent = httpagentparser.detect(request.headers.get('User-Agent'))
-    os = agent["platform"]["name"]
-    browser = agent["browser"]["name"]
+    # Store Click in MongoDB
+    clicks.insert_one({
+        "username": username,
+        "alias": alias,
+        "datetime": time,
+        "os": os,
+        "browser": browser
+    })
 
     # Redirect to original
     return f"{res[1]}"
