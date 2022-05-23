@@ -32,9 +32,9 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 - Get location stats for clicks
 - Get device stats for clicks
 - Get browser stats for clicks
+- Update link stats retrieval to include mongodb
 
 ## Pending Features
-- Update link stats retrieval to include mongodb
 - Checks for duplicate create links
 - Add error handling and validation checks
 - Bulk export links (will be done on frontend using existing routes)
