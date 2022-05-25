@@ -78,6 +78,10 @@ def login():
     res = cur.fetchone()
     cur.close()
 
+    # User not found
+    if res == None:
+        return "User not found."
+
     # Check Password
     if check_password_hash(res[3], password):
         return f"Welcome back {res[1]}!"
