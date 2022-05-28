@@ -37,7 +37,12 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 
 
 ## Pending Features
-- Add error handling and validation checks
+
 - Bulk export links (will be done on frontend using existing routes)
 - Export link stats (will be done on frontend using existing routes)
 - Add Delete stats from mongodb when link deleted
+
+
+## In Progress
+
+- Add error handling and validation checks (Sean)
