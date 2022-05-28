@@ -7,6 +7,8 @@ Pre-requisites:
 
 - Python
 
+Make sure to set up and configure the `config.py` file from the `samples` library.
+
 Install dependencies, create the SQLite database and run the flask application
 
 ```
@@ -34,15 +36,16 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 - Get browser stats for clicks
 - Update link stats retrieval to include mongodb
 - Checks for duplicate create links
-
+- Email-Regex-validation
 
 ## Pending Features
 
 - Bulk export links (will be done on frontend using existing routes)
 - Export link stats (will be done on frontend using existing routes)
 - Add Delete stats from mongodb when link deleted
-
+- Analytics
 
 ## In Progress
 
 - Add error handling and validation checks (Sean)
+
