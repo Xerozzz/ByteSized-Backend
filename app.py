@@ -1,5 +1,6 @@
 # Library imports
 from distutils.log import error
+from tracemalloc import stop
 from flask import Flask, request, jsonify,send_file
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -59,10 +60,11 @@ def register():
     username = request.form["username"]
     password = generate_password_hash(request.form["password"], "sha256")
     email = request.form["email"]
-
     # Validation of email with regex.py
-    if validateEmail(email) == False:
-        print('Invalid Email')
+    if validateEmail(email):
+        return None
+    else:
+        print('fail')
         # Reset the page
 
     # Insert data
@@ -85,8 +87,10 @@ def login():
     email = request.form["email"]
 
     # Validation of email with regex.py
-    if validateEmail(email) == False:
-        print('Invalid Email')
+    if validateEmail(email):
+        return None
+    else:
+        print('fail')
         # Reset the page
 
 
