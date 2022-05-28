@@ -7,6 +7,8 @@ Pre-requisites:
 
 - Python
 
+Make sure to set up and configure the `config.py` file from the `samples` library.
+
 Install dependencies, create the SQLite database and run the flask application
 
 ```
