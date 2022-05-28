@@ -1,4 +1,6 @@
 # Library imports
+from distutils.log import error
+from tracemalloc import stop
 from flask import Flask, request, jsonify,send_file
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,10 +14,12 @@ from datetime import datetime
 import httpagentparser
 from bson.json_util import dumps
 
+
 # Import from other python files
 sys.path.append('./modules')
 from qr import qr
 from processData import processData
+from regexValidator import validateEmail
 
 app = Flask(__name__)
 UPLOAD_FOLDER = './uploads'
@@ -35,6 +39,9 @@ app.config['MYSQL_PASSWORD'] = config.MYSQL_PASSWORD
 app.config['MYSQL_DB'] = config.MYSQL_DB
 mysql = MySQL(app)
 
+
+
+
 # Test
 @app.route("/")
 def index():
@@ -53,6 +60,12 @@ def register():
     username = request.form["username"]
     password = generate_password_hash(request.form["password"], "sha256")
     email = request.form["email"]
+    # Validation of email with regex.py
+    if validateEmail(email):
+        return None
+    else:
+        print('fail')
+        # Reset the page
 
     # Insert data
     try:
@@ -63,14 +76,23 @@ def register():
         return "User added!"
     except Exception as err:
         return("Something went wrong: {}".format(err))
-    
 
+    
+    
 # Login User
 @app.route("/login", methods = ['POST'])
 def login():
     # Retrieve data
     password = request.form["password"]
     email = request.form["email"]
+
+    # Validation of email with regex.py
+    if validateEmail(email):
+        return None
+    else:
+        print('fail')
+        # Reset the page
+
 
     # Retrieve data from DB
     cur = mysql.connection.cursor()
