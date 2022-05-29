@@ -36,7 +36,8 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 - Get browser stats for clicks
 - Update link stats retrieval to include mongodb
 - Checks for duplicate create links
-- Email-Regex-validation
+- Add error handling and validation checks for email, registering and login
+- Changing app.py functions into modules for reusability
 
 ## Pending Features
 
@@ -46,6 +47,4 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 - Analytics
 
 ## In Progress
-
 - Add error handling and validation checks (Sean)
-
