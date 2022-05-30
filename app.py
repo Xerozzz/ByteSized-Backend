@@ -18,9 +18,9 @@ from bson.json_util import dumps
 
 # Import from other python files
 sys.path.append('./modules')
+import appFunctions
 from qr import qr
 from processData import processData
-import appFunctions as function
 
 app = Flask(__name__)
 UPLOAD_FOLDER = './uploads'

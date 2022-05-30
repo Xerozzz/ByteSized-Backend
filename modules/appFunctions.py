@@ -22,30 +22,6 @@ sys.path.append('./modules')
 from qr import qr
 from processData import processData
 from regexValidator import validateEmail
-
-app = Flask(__name__)
-UPLOAD_FOLDER = './uploads'
-ALLOWED_EXTENSIONS = {'csv'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# MongoDB Atlas (need to change if using normal mongodb or other db)
-mongodb_atlas = config.MONGODB_ATLAS
-client = MongoClient(mongodb_atlas)
-db = client.clicks
-clicks = db.clicks
-
-# SQLDB init
-app.config['MYSQL_HOST'] = config.MYSQL_HOST
-app.config['MYSQL_USER'] = config.MYSQL_USER
-app.config['MYSQL_PASSWORD'] = config.MYSQL_PASSWORD
-app.config['MYSQL_DB'] = config.MYSQL_DB
-mysql = MySQL(app)
-
-# Create timestamp
-time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-agent = httpagentparser.detect(request.headers.get('User-Agent'))
-os = agent["platform"]["name"]
-browser = agent["browser"]["name"]
     
 
 # Function to get webpage
@@ -148,6 +124,11 @@ def retrievingOriginalLink(username, alias):
         cur.close()
 
         try:
+            # Create timestamp
+            time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            agent = httpagentparser.detect(request.headers.get('User-Agent'))
+            os = agent["platform"]["name"]
+            browser = agent["browser"]["name"]
             # Store Click in MongoDB
             clicks.insert_one({
                 "username": username,
