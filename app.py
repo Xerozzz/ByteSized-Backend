@@ -18,24 +18,16 @@ from bson.json_util import dumps
 
 # Import from other python files
 sys.path.append('./modules')
-import appFunctions
+import appFunctions as function
 from qr import qr
 from processData import processData
+import DBconnection
 
-app = Flask(__name__)
+mysql, app = DBconnection.connectDB()
+
 UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-
-# SQLDB init
-app.config['MYSQL_HOST'] = config.MYSQL_HOST
-app.config['MYSQL_USER'] = config.MYSQL_USER
-app.config['MYSQL_PASSWORD'] = config.MYSQL_PASSWORD
-app.config['MYSQL_DB'] = config.MYSQL_DB
-mysql = MySQL(app)
-
 
 
 
