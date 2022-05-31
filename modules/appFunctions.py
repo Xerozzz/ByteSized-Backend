@@ -23,13 +23,29 @@ from qr import qr
 from processData import processData
 import DBconnection
 import regexValidator as validate
-
 mysql, app = DBconnection.connectDB()
 
 # Function to get webpage
 def getIndex():
     print("Connection success!")
     return "Connection Success!"
+
+
+
+
+
+
+
+# <--------------------------------------- Allowed file extension --------------------------------------->
+
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = {'csv'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 # <--------------------------------------- User Related --------------------------------------->
@@ -168,7 +184,36 @@ def getAllLinks(username):
     except Exception as err:
         return("Something went wrong: {}".format(err))
 
+# Function to Create multiple links at once using inputs from a CSV file
+def bulkCreateLinks():
+    if 'file' not in request.files:
+        return "No file part"
+    file = request.files['file']
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        return 'No selected file'
+    if file and allowed_file(file.filename):
+        # Store file
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
+        # Process data
+        val = processData(filename)
+        
+        # Insert data
+        try:
+            cur = mysql.connection.cursor()
+            sql = "INSERT INTO urls (original, alias, username, tag) VALUES (%s, %s, %s, %s)"
+            cur.executemany(sql,val)
+            mysql.connection.commit()
+            rows = cur.rowcount
+            cur.close()
+
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return f"{rows} links added!"
+        except Exception as err:
+            return("Something went wrong: {}".format(err))
 # <--------------------------------------- Stats Related --------------------------------------->
 
 
