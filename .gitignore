@@ -116,3 +116,4 @@ dmypy.json
 database.db
 config.py
 sample.json
+Pipfile

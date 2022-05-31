@@ -15,15 +15,14 @@ import json
 from datetime import datetime
 import httpagentparser
 from bson.json_util import dumps
-from modules.regexValidator import validatePassword
 
 
 # Import from other python files
 sys.path.append('./modules')
 from qr import qr
 from processData import processData
-from regexValidator import validateEmail
 import DBconnection
+import regexValidator as validate
 
 mysql, app = DBconnection.connectDB()
 
@@ -38,8 +37,8 @@ def getIndex():
 
 # Function to register a User after verifying the email is of a proper type
 def registerUser(username, password, email):
-    if validateEmail(email) == True:
-        if validatePassword(password) == False:
+    if validate.validateEmail(email) == True:
+        if validate.validatePassword(password) == False:
             try:
                 # Fetch data from SQL database
                 cur = mysql.connection.cursor()
@@ -57,7 +56,7 @@ def registerUser(username, password, email):
 
 # Function to login 
 def loginUser(email, password):
-    if validateEmail(email) == True:
+    if validate.validateEmail(email) == True:
 
         # Fetch data from SQL database
         cur = mysql.connection.cursor()

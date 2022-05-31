@@ -38,6 +38,7 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 - Checks for duplicate create links
 - Add error handling and validation checks for email, registering and login
 - Changing app.py functions into modules for reusability
+- Add error handling and validation checks
 
 ## Pending Features
 
@@ -45,6 +46,12 @@ You can access the application at `127.0.0.1:5000` or `<your_domain>:5000`.
 - Export link stats (will be done on frontend using existing routes)
 - Add Delete stats from mongodb when link deleted
 - Analytics
+- All Links page
+- Delete all Clicks data from Mongo DB when link is deleted
+- Look at exploring how analytics can be done for customer
+- Explore hwo to add unit tests
+- Explore what other features to add in phase 2
+
 
 ## In Progress
-- Add error handling and validation checks (Sean)
+
