@@ -116,4 +116,7 @@ dmypy.json
 database.db
 config.py
 sample.json
-Pipfile
+<<<<<<< HEAD
+=======
+env
+>>>>>>> bff12887bde9561c2da31fea9594574cb5da5b27
