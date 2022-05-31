@@ -15,6 +15,7 @@ import json
 from datetime import datetime
 import httpagentparser
 from bson.json_util import dumps
+from modules.regexValidator import validatePassword
 
 
 # Import from other python files
@@ -22,7 +23,9 @@ sys.path.append('./modules')
 from qr import qr
 from processData import processData
 from regexValidator import validateEmail
-    
+import DBconnection
+
+mysql, app = DBconnection.connectDB()
 
 # Function to get webpage
 def getIndex():
@@ -35,25 +38,26 @@ def getIndex():
 
 # Function to register a User after verifying the email is of a proper type
 def registerUser(username, password, email):
-    if validateEmail(email):
-        try:
-
-            # Fetch data from SQL database
-            cur = mysql.connection.cursor()
-            res = cur.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)", (username, password, email))
-            mysql.connection.commit()
-            cur.close()
-            print(res)
-            return "User added!"
-        except Exception as err:
-            return("Something went wrong: {}".format(err))
+    if validateEmail(email) == True:
+        if validatePassword(password) == False:
+            try:
+                # Fetch data from SQL database
+                cur = mysql.connection.cursor()
+                res = cur.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)", (username, password, email))
+                mysql.connection.commit()
+                cur.close()
+                return "User added!"
+            except Exception as err:
+                return("Something went wrong: {}".format(err))
+        else:
+            return "Please enter a stronger password"
     else:
         return "Please enter a proper email"
         # Reset the page
 
 # Function to login 
 def loginUser(email, password):
-    if validateEmail(email):
+    if validateEmail(email) == True:
 
         # Fetch data from SQL database
         cur = mysql.connection.cursor()
