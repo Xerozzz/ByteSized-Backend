@@ -27,7 +27,7 @@ mysql, app = DBconnection.connectDB()
 
 
 # Test
-@app.route("/", methods = ["GET"])
+@app.route("/index", methods = ["GET"])
 def index():
     res = function.getIndex()
     return res
