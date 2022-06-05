@@ -25,26 +25,12 @@ import DBconnection
 
 mysql, app = DBconnection.connectDB()
 
-UPLOAD_FOLDER = './uploads'
-ALLOWED_EXTENSIONS = {'csv'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
 
 # Test
 @app.route("/", methods = ["GET"])
 def index():
     res = function.getIndex()
     return res
-
-# Allowed Files Check
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-# Not sure if needed, will not turn it into a module.
-
 
 # Register User
 @app.route("/register", methods = ['POST'])
@@ -82,40 +68,11 @@ def createLink():
     return res
 
 # Bulk Create Link
-
-# Dont know what this means, will migrate once i understand
-
 @app.route("/bulkcreate", methods = ['POST'])
 def bulkCreate():
     # Retrieve data
-    if 'file' not in request.files:
-        return "No file part"
-    file = request.files['file']
-    # If the user does not select a file, the browser submits an
-    # empty file without a filename.
-    if file.filename == '':
-        return 'No selected file'
-    if file and allowed_file(file.filename):
-        # Store file
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        # Process data
-        val = processData(filename)
-        
-        # Insert data
-        try:
-            cur = mysql.connection.cursor()
-            sql = "INSERT INTO urls (original, alias, username, tag) VALUES (%s, %s, %s, %s)"
-            cur.executemany(sql,val)
-            mysql.connection.commit()
-            rows = cur.rowcount
-            cur.close()
-
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return f"{rows} links added!"
-        except Exception as err:
-            return("Something went wrong: {}".format(err))
+    res = function.bulkCreateLink()
+    return res
 
 # Delete Link
 @app.route("/delete", methods = ['DELETE'])
