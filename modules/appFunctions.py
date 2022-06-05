@@ -30,12 +30,6 @@ def getIndex():
     print("Connection success!")
     return "Connection Success!"
 
-
-
-
-
-
-
 # <--------------------------------------- Allowed file extension --------------------------------------->
 
 UPLOAD_FOLDER = './uploads'
