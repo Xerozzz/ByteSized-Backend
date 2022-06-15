@@ -93,7 +93,7 @@ def putLink():
     res = function.aliasUpdate(alias, username, newAlias, newOriginal, tag)
     return res
 
-# Get Link
+# Get OriginalLink
 @app.route("/<username>/<alias>")
 def get(username, alias):
     res = function.retrievingOriginalLink(username,alias)
