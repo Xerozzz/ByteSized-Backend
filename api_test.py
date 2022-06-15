@@ -3,7 +3,7 @@ import unittest
 import requests
 import json
 
-# Class to start the Unit Test
+# Class that contains all unit test sorted by purpose
 class AddTest(unittest.TestCase):
     def test_1_getWebPage(self):
         URL = "http://127.0.0.1:5000/index"
@@ -12,7 +12,6 @@ class AddTest(unittest.TestCase):
 
 
 # <--------------------------------------- User Related --------------------------------------->
-
 
 
 # Function to unit Test registerUser API
@@ -113,7 +112,7 @@ class AddTest(unittest.TestCase):
         r = requests.get(URL, testREQ)
         self.assertEqual(r.status_code, 200)
 
-# Funciton to unit Test getDetailedStats  (Still requires "Clicks" From mongo DB)
+# Function to unit Test getDetailedStats  (Still requires "Clicks" From mongo DB)
     def test_11_getDetailedStats(self):
         URL = "http://127.0.0.1:5000/test/aws/stats/detailed"
         testREQ = {
@@ -122,3 +121,19 @@ class AddTest(unittest.TestCase):
         }
         r = requests.get(URL , testREQ)
         self.assertEqual(r.status_code, 200)
+
+# Function to unit Test bulkCreateLinks
+    def test_12_generateQRCode(self):
+        URL = "http://127.0.0.1:5000/test/aws/qr/png"
+        testREQ = {
+            "username" : "test",
+            "alias" : "aws",
+            "filetype" : "png"
+        }
+        r = requests.get(
+            URL, testREQ
+            )
+        print(r)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
+
+
