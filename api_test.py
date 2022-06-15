@@ -3,16 +3,17 @@ import unittest
 import requests
 import json
 
-# Class to start the Unit Test
+# Class that contains all unit test sorted by purpose
 class AddTest(unittest.TestCase):
+# <--------------------------------------- User Related --------------------------------------->
+
     def test_1_getWebPage(self):
         URL = "http://127.0.0.1:5000/index"
         r = requests.get(URL)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 
 # <--------------------------------------- User Related --------------------------------------->
-
 
 
 # Function to unit Test registerUser API
@@ -24,7 +25,7 @@ class AddTest(unittest.TestCase):
             'password' : 'ThisIsASecret123!'
             }
         r = requests.post(URL, testUser)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 # Function to unit Test loginUser API
     def test_3_loginUser(self):
@@ -35,7 +36,7 @@ class AddTest(unittest.TestCase):
             'password':'jiajun is gayw'
             }
         r = requests.post(URL, testUser)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 
 # <--------------------------------------- Alias Related --------------------------------------->
@@ -51,7 +52,7 @@ class AddTest(unittest.TestCase):
             'tag': ''
             }
         r = requests.post(URL, testREQ)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 # Function to unit Test aliasUpdate API
     def test_5_AliasUpdate(self):
@@ -66,7 +67,7 @@ class AddTest(unittest.TestCase):
         r = requests.put(
             URL, testJSON
         )
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 # Function to unit Test aliasDeletion API
     def test_6_AliasDelete(self):
@@ -75,20 +76,20 @@ class AddTest(unittest.TestCase):
             "username": "test",
             "alias": "reddit"
         })
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 # Function to unit Test retrievingOriginalLink    (Still requires "Clicks" From mongo DB)
     def test_7_retrievingOriginalLink(self):
         URL = "http://127.0.0.1:5000/test/aws"
         r = requests.get(URL)
-        self.assertEqual(r.status_code,200)
+        self.assertEqual(r.status_code,200) # Will be changed once the proper status code has been implemented
 
 # Function to unit Test getAllLinks
     def test_8_getAllLinks(self):
         URL = "http://127.0.0.1:5000/test"
         r = requests.get(URL)
         print(r.text)
-        self.assertEqual(r.status_code,200)
+        self.assertEqual(r.status_code,200) # Will be changed once the proper status code has been implemented
     
 
 # <--------------------------------------- Stats Related --------------------------------------->
@@ -102,7 +103,7 @@ class AddTest(unittest.TestCase):
             "alias" : "aws"
         }
         r = requests.get(URL, testREQ)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
 # Function to unit Test getAllStats
     def test_10_getAllStats(self):
@@ -111,9 +112,9 @@ class AddTest(unittest.TestCase):
             "username" : "test"
         }
         r = requests.get(URL, testREQ)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
 
-# Funciton to unit Test getDetailedStats  (Still requires "Clicks" From mongo DB)
+# Function to unit Test getDetailedStats  (Still requires "Clicks" From mongo DB)
     def test_11_getDetailedStats(self):
         URL = "http://127.0.0.1:5000/test/aws/stats/detailed"
         testREQ = {
@@ -121,4 +122,20 @@ class AddTest(unittest.TestCase):
             "alias" : "aws"
         }
         r = requests.get(URL , testREQ)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
+
+# Function to unit Test bulkCreateLinks
+    def test_12_generateQRCode(self):
+        URL = "http://127.0.0.1:5000/test/aws/qr/png"
+        testREQ = {
+            "username" : "test",
+            "alias" : "aws",
+            "filetype" : "png"
+        }
+        r = requests.get(
+            URL, testREQ
+            )
+        print(r)
+        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
+
+
