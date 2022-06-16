@@ -138,6 +138,8 @@ def retrievingOriginalLink(username, alias):
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM urls WHERE alias = %s AND username = %s", (alias, username))
         res = cur.fetchone()
+        if res == None:
+            return "No such link found!"
         cur.execute("UPDATE urls SET clicks = clicks + 1 WHERE alias = %s AND username = %s", (alias, username))
         mysql.connection.commit()
         cur.close()
