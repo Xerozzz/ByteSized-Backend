@@ -25,6 +25,12 @@ import DBconnection
 import regexValidator as validate
 mysql, app = DBconnection.connectDB()
 
+# To init mongodb connection
+mongodb_atlas = config.MONGODB_ATLAS
+client = MongoClient(mongodb_atlas)
+db = client.clicks
+clicks = db.clicks
+
 # Function to get webpage
 def getIndex():
     print("Connection success!")
@@ -154,7 +160,7 @@ def retrievingOriginalLink(username, alias):
             return f"{res[1]}"
         
         except Exception as err:
-            return err
+            return("Something went wrong: {}".format(err))
 
     except Exception as err:
         return("Something went wrong: {}".format(err))
