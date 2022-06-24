@@ -18,14 +18,15 @@ class AddTest(unittest.TestCase):
 
 # Function to unit Test registerUser API
     def test_2_registerUser(self):
-        URL = "http://127.0.0.1:5000/register"
+        URL = 'http://127.0.0.1:5000/register'
         testUser = {
-            'username':'testuserHello',
-            'email':'Hello@gmail.com',
-            'password' : 'ThisIsASecret123!'
+            'username':'ThisisUnique',
+            'email':'ThisisUnique@gmail.com',
+            'password':'Unique123!@#'
             }
         r = requests.post(URL, testUser)
-        self.assertEqual(r.status_code, 200) # Will be changed once the proper status code has been implemented
+        self.assertEqual(r.status_code, 201)
+
 
 # Function to unit Test loginUser API
     def test_3_loginUser(self):
@@ -43,7 +44,7 @@ class AddTest(unittest.TestCase):
 
 
 # Function to unit Test aliasCreation API
-    def test_4_AliasLink(self):
+    def test_4_AliasCreate(self):
         URL = "http://127.0.0.1:5000/create"
         testREQ = {
             'original':'www.test.com',

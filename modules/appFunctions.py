@@ -1,6 +1,7 @@
 
 # Library imports
 from distutils.log import error
+from http import HTTPStatus
 from tracemalloc import stop
 from urllib import response
 from flask import Flask, request, jsonify,send_file
@@ -55,34 +56,32 @@ def registerUser(username, password, email):
                 res = cur.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)", (username, password, email))
                 mysql.connection.commit()
                 cur.close()
-                return "User added!"
+                return "User added!", 201
             except Exception as err:
-                return("Something went wrong: {}".format(err))
+                print(err)
+                return "Something went wrong: {}".format(err), 400
         else:
-            return "Please enter a stronger password"
+            return "Please enter a stronger password", 400
     else:
-        return "Please enter a proper email"
+        return "Please enter a proper email", 400
         # Reset the page
 
 # Function to login 
 def loginUser(email, password):
     if validate.validateEmail(email) == True:
-
         # Fetch data from SQL database
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", [email])
         res = cur.fetchone()
         cur.close()
-
         # User not found
         if res == None:
-            return "User not found."
-
+            return "User not found.", 
         # Check Password
         if check_password_hash(res[3], password):
             return f"Welcome back {res[1]}!"
         else:
-            return "Password or email does not exist"
+            return "email does not exist"
     else:
         return "Please enter a valid email address"
         # Reset the page
@@ -98,7 +97,7 @@ def aliasCreation(original, alias, username, tag):
         res = cur.execute("INSERT INTO urls (original, alias, username, tag) VALUES (%s, %s, %s, %s)", (original, alias, username, str(tag)))
         mysql.connection.commit()
         cur.close()
-        print(res)
+        
         return f"localhost:5000/{username}/{alias}"
     except Exception as err:
         return("Something went wrong: {}".format(err))
@@ -272,3 +271,4 @@ def generateQRCode(username, alias, filetype):
 
     except Exception as err:
         return("Something went wrong: {}".format(err))
+        
