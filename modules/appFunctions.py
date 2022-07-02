@@ -116,6 +116,8 @@ def aliasDeletion(alias, username):
         cur.execute("DELETE FROM urls WHERE alias = %s and username =  %s", (alias, username))
         mysql.connection.commit()
         cur.close()
+
+        clicks.delete_many({'alias': alias, 'username': username})
         return "Link deleted!"
     except Exception as err:
         return("Something went wrong: {}".format(err))
