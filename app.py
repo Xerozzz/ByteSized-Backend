@@ -153,3 +153,9 @@ def detailedStats(username, alias):
 def qrGeneration(username, alias, filetype):
     res = function.generateQRCode(username, alias, filetype)
     return res
+
+# All clicks
+@app.route("/<username>/all_clicks")
+def allClicks(username):
+    res = function.getAllClicks(username)
+    return res

@@ -270,6 +270,21 @@ def getDetailedStats(username, alias):
     except Exception as err:
         return("Something went wrong: {}".format(err))
 
+# Get all links from all links of a user
+def getAllClicks(username):
+    try:
+        # Retrieve data
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT SUM(clicks) FROM urls WHERE username = %s", [username])
+        output = []
+        for row in cur:
+            output.append(str(row[0]))
+        cur.close()
+        return output[0]
+
+    except Exception as err:
+        return("Something went wrong: {}".format(err))
+
 # <--------------------------------------- QR Code Related --------------------------------------->
 
 # Generation of the QR Code
