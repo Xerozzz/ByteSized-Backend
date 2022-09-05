@@ -280,7 +280,10 @@ def getAllClicks(username):
         for row in cur:
             output.append(str(row[0]))
         cur.close()
-        return output[0]
+        res = output[0]
+        if res == "None":
+            res = "0"
+        return res
 
     except Exception as err:
         return("Something went wrong: {}".format(err))
