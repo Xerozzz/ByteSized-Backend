@@ -35,6 +35,10 @@ def index():
 # Register User
 @app.route("/register", methods = ['POST'])
 def register():
+    try:
+        input_json = request.get_json(force=True) 
+    except:
+        input_json = request.form
     # Retrieve data
     username = request.form["username"]
     password = generate_password_hash(request.form["password"], "sha256")
@@ -46,6 +50,10 @@ def register():
 # Login User
 @app.route("/login", methods = ['POST'])
 def login():
+    try:
+        input_json = request.get_json(force=True) 
+    except:
+        input_json = request.form
     # Retrieve data
     password = request.form["password"]
     email = request.form["email"]
@@ -57,11 +65,15 @@ def login():
 # Create Link
 @app.route("/create", methods = ['POST'])
 def createLink():
+    try:
+        input_json = request.get_json(force=True) 
+    except:
+        input_json = request.form
     # Retrieve data
-    original = request.form["original"]
-    alias = request.form["alias"]
-    username = request.form["username"]
-    tag = request.form["tag"]
+    original = input_json["original"]
+    alias = input_json["alias"]
+    username = input_json["username"]
+    tag = input_json["tag"]
     if tag == "":
         tag = []
     res = function.aliasCreation(original, alias, username, tag)
@@ -70,6 +82,10 @@ def createLink():
 # Bulk Create Link
 @app.route("/bulkcreate", methods = ['POST'])
 def bulkCreate():
+    try:
+        input_json = request.get_json(force=True) 
+    except:
+        input_json = request.form
     # Retrieve data
     res = function.bulkCreateLink()
     return res
@@ -77,6 +93,10 @@ def bulkCreate():
 # Delete Link
 @app.route("/delete", methods = ['DELETE'])
 def deleteLink():
+    try:
+        input_json = request.get_json(force=True) 
+    except:
+        input_json = request.form
     alias = request.form["alias"]
     username = request.form["username"]
     res = function.aliasDeletion(alias, username)
@@ -85,6 +105,10 @@ def deleteLink():
 # Update Link
 @app.route("/update", methods = ['PUT'])
 def putLink():
+    try:
+        input_json = request.get_json(force=True) 
+    except:
+        input_json = request.form
     alias = request.form["alias"]
     username = request.form["username"]
     newAlias = request.form["newAlias"]
