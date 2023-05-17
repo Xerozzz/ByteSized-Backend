@@ -14,7 +14,7 @@ import json
 from datetime import datetime
 import httpagentparser
 from bson.json_util import dumps
-
+from flask_cors import CORS
 
 # Import from other python files
 sys.path.append('./modules')
@@ -24,7 +24,7 @@ from processData import processData
 import DBconnection
 
 mysql, app = DBconnection.connectDB()
-
+CORS(app)
 
 # Test
 @app.route("/index", methods = ["GET"])
@@ -77,7 +77,14 @@ def createLink():
     if tag == "":
         tag = []
     res = function.aliasCreation(original, alias, username, tag)
-    return res
+    response = jsonify({
+        'original': original,
+        'alias': alias,
+        'aliasLink': res,
+        'clicks': 0,
+        })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 # Bulk Create Link
 @app.route("/bulkcreate", methods = ['POST'])
@@ -97,10 +104,12 @@ def deleteLink():
         input_json = request.get_json(force=True) 
     except:
         input_json = request.form
-    alias = request.form["alias"]
-    username = request.form["username"]
+    alias = input_json["alias"]
+    username = input_json["username"]
     res = function.aliasDeletion(alias, username)
-    return res
+    response = jsonify({'Alias': res})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
     
 # Update Link
 @app.route("/update", methods = ['PUT'])
@@ -109,11 +118,11 @@ def putLink():
         input_json = request.get_json(force=True) 
     except:
         input_json = request.form
-    alias = request.form["alias"]
-    username = request.form["username"]
-    newAlias = request.form["newAlias"]
-    newOriginal = request.form["newOriginal"]
-    tag = request.form["tag"]
+    alias = input_json["alias"]
+    username = input_json["username"]
+    newAlias = input_json["newAlias"]
+    newOriginal = input_json["newOriginal"]
+    tag = input_json["tag"]
     res = function.aliasUpdate(alias, username, newAlias, newOriginal, tag)
     return res
 

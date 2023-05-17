@@ -118,7 +118,7 @@ def aliasDeletion(alias, username):
         cur.close()
 
         clicks.delete_many({'alias': alias, 'username': username})
-        return "Link deleted!"
+        return alias
     except Exception as err:
         return("Something went wrong: {}".format(err))
 
@@ -275,15 +275,18 @@ def getAllClicks(username):
     try:
         # Retrieve data
         cur = mysql.connection.cursor()
-        cur.execute("SELECT SUM(clicks) FROM urls WHERE username = %s", [username])
+        cur.execute("SELECT SUM(clicks), COUNT(clicks) FROM urls WHERE username = %s", [username])
         output = []
         for row in cur:
-            output.append(str(row[0]))
+            output = [row[0], row[1]]
         cur.close()
-        res = output[0]
-        if res == "None":
-            res = "0"
-        return res
+        res = {
+            "clicks": str(output[0]),
+            "links": str(output[1])
+        }
+        if res["clicks"] == "None":
+            res["clicks"] = "0"
+        return jsonify(res)
 
     except Exception as err:
         return("Something went wrong: {}".format(err))
